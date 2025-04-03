@@ -47,18 +47,18 @@ const emits = defineEmits<{
   th,
   td {
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $border-color;
     text-align: left;
   }
 
   th {
-    background-color: #007bff;
+    background-color: $primary-color;
     font-weight: bold;
     color: white;
   }
 
   tr:hover {
-    background-color: rgba(#f8f9fa, 0.7);
+    background-color: rgba($bg-light, 0.7);
   }
 }
 </style>

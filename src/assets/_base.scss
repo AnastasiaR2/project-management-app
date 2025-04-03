@@ -1,7 +1,4 @@
-$primary-color: #007bff;
-$border-color: #ddd;
-$bg-light: #f8f9fa;
-$font-color: #333;
+@use "./variables" as *;
 
 *,
 *::before,
