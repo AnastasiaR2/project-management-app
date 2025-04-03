@@ -5,14 +5,16 @@
       "name": "Project 1",
       "description": "Description of Project 1",
       "status": "In Progress",
-      "tasksCount": 5
+      "tasksCount": 5,
+      "createdAt": "2025-04-10"
     },
     {
       "id": 2,
       "name": "Project 2",
       "description": "Description of Project 2",
       "status": "Completed",
-      "tasksCount": 3
+      "tasksCount": 3,
+      "createdAt": "2025-05-10"
     }
   ],
   "tasks": [
