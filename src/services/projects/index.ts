@@ -5,6 +5,6 @@ async function getProjects() {
   return await http.get<Project[]>("projects");
 }
 
-export default {
+export const ProjectService = {
   getProjects,
 };

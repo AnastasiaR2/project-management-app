@@ -8,6 +8,10 @@ defineProps<{
   data: Record<string, string | number>[];
   columns: Column[];
 }>();
+
+const emits = defineEmits<{
+  rowSelected: [id: string];
+}>();
 </script>
 
 <template>
@@ -21,7 +25,7 @@ defineProps<{
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in data" :key="item.id">
+        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             {{ item[column.key] }}
           </td>
