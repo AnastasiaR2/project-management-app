@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Project 1",
+      "description": "Description of Project 1",
+      "status": "In Progress",
+      "tasksCount": 5
+    },
+    {
+      "id": 2,
+      "name": "Project 2",
+      "description": "Description of Project 2",
+      "status": "Completed",
+      "tasksCount": 3
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Task 1",
+      "projectId": 1,
+      "assignee": "John",
+      "status": "To Do",
+      "dueDate": "2025-04-10"
+    },
+    {
+      "id": 2,
+      "title": "Task 2",
+      "projectId": 1,
+      "assignee": "Alice",
+      "status": "In Progress",
+      "dueDate": "2025-04-12"
+    },
+    {
+      "id": 2,
+      "title": "Task 2",
+      "projectId": 1,
+      "assignee": "Alice",
+      "status": "Done",
+      "dueDate": "2025-04-12"
+    }
+  ]
+}
