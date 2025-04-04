@@ -24,17 +24,13 @@ async function handleAddProject(project: Project) {
 
 <template>
   <main>
-    <h1 class="project-title">Projects</h1>
-    <AppButton @click="isModalOpen = true">Add Project</AppButton>
+    <div class="main-title-wrapper">
+      <h1>Projects</h1>
+      <AppButton @click="isModalOpen = true">Add Project</AppButton>
+    </div>
     <AppModal v-if="isModalOpen" @close="isModalOpen = false">
       <template #body><ProjectForm @submit="handleAddProject" /></template>
     </AppModal>
     <ProjectsTable />
   </main>
 </template>
-
-<style lang="scss">
-.project-title {
-  margin-bottom: 10px;
-}
-</style>

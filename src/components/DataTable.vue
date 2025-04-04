@@ -58,7 +58,7 @@ const emits = defineEmits<{
   }
 
   tr:hover {
-    background-color: rgba($bg-light, 0.7);
+    background-color: rgba($primary-color, 0.1);
   }
 }
 </style>

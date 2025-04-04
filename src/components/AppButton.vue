@@ -11,7 +11,6 @@ button {
   color: $color-white;
   background-color: $primary-color;
   cursor: pointer;
-  margin: 20px auto;
   transition: background-color 0.2s ease;
   letter-spacing: 0.8px;
 
@@ -22,6 +21,11 @@ button {
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba($primary-color, 0.5);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 }
 </style>
