@@ -25,7 +25,7 @@ const emits = defineEmits<{
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id)">
+        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id as string)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             {{ item[column.key] }}
           </td>

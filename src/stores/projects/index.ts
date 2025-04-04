@@ -4,7 +4,7 @@ import type { Project } from "@/services/projects/types";
 import { API } from "@/services";
 import { AxiosError } from "axios";
 
-export const useProjectStore = defineStore("projectStore", () => {
+export const useProjectStore = defineStore("project", () => {
   const projects = ref<Project[]>([]);
 
   const getProjectById = computed((id) => projects.value.find((p) => p.id === id));
