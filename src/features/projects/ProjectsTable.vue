@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import DataTable from "./DataTable.vue";
+import DataTable from "@/components/DataTable.vue";
 import { useProjectStore } from "@/stores/projects";
 
 const columns = [

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import TasksTable from "@/components/TasksTable.vue";
+import TasksTable from "@/features/tasks/TasksTable.vue";
 import { useProjectStore } from "@/stores/projects";
 
 const route = useRoute();

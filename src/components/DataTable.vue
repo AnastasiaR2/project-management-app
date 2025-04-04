@@ -35,12 +35,12 @@ const emits = defineEmits<{
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  background: $color-white;
+  border-radius: $border-radius;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -54,7 +54,7 @@ const emits = defineEmits<{
   th {
     background-color: $primary-color;
     font-weight: bold;
-    color: white;
+    color: $color-white;
   }
 
   tr:hover {
