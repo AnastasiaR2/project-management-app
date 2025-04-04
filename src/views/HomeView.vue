@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import ProjectsTable from "@/features/projects/ProjectsTable.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppButton from "@/components/AppButton.vue";
@@ -6,7 +7,6 @@ import ProjectForm from "@/features/projects/ProjectForm.vue";
 import type { Project } from "@/services/projects/types";
 import { useProjectStore } from "@/stores/projects";
 
-import { ref } from "vue";
 const isModalOpen = ref(false);
 
 const projectStore = useProjectStore();
