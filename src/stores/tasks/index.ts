@@ -17,6 +17,10 @@ export const useTaskStore = defineStore(
       tasks.value = data;
     }
 
+    function addTask(task: Task) {
+      tasks.value.push(task);
+    }
+
     async function dispatchGetTasks() {
       try {
         const { status, data } = await API.tasks.getTasks();
@@ -38,11 +42,31 @@ export const useTaskStore = defineStore(
       };
     }
 
+    async function dispatchCreateTask(newTask: Task) {
+      try {
+        const { status, data } = await API.tasks.createTask(newTask);
+
+        if (status === 201) {
+          addTask(data);
+          return {
+            status,
+          };
+        }
+      } catch (error) {
+        const _error = error as AxiosError<string>;
+
+        return {
+          status: _error.response?.status,
+        };
+      }
+    }
+
     return {
       tasks,
       initTasks,
       getTasksByProjectId,
       dispatchGetTasks,
+      dispatchCreateTask,
     };
   },
   {
