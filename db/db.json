@@ -2,7 +2,7 @@
   "projects": [
     {
       "id": "1",
-      "name": "Project 1",
+      "name": "Alpha",
       "description": "Description of Project 1",
       "status": "In Progress",
       "tasksCount": 2,
@@ -10,7 +10,7 @@
     },
     {
       "id": "2",
-      "name": "Project 2",
+      "name": "Beta",
       "description": "Description of Project 2",
       "status": "Completed",
       "tasksCount": 1,

@@ -6,7 +6,7 @@ import { useTaskStore } from "@/stores/tasks";
 
 const columns = [
   { key: "id", label: "ID" },
-  { key: "title", label: "Title" },
+  { key: "title", label: "Task Title" },
   { key: "assignee", label: "Assignee" },
   { key: "status", label: "Status" },
   { key: "dueDate", label: "Due Date" },
