@@ -4,13 +4,21 @@ import AppModal from "@/components/AppModal.vue";
 import AppButton from "@/components/AppButton.vue";
 import ProjectForm from "@/features/projects/ProjectForm.vue";
 import type { Project } from "@/services/projects/types";
+import { useProjectStore } from "@/stores/projects";
 
 import { ref } from "vue";
 const isModalOpen = ref(false);
 
-function handleAddProject(project: Project) {
-  console.log("New project:", project);
-  isModalOpen.value = false;
+const projectStore = useProjectStore();
+
+async function handleAddProject(project: Project) {
+  const response = await projectStore.dispatchCreateProject(project);
+
+  if (response?.status === 201) {
+    isModalOpen.value = false;
+  } else {
+    console.error("Failed to create project:", response?.status);
+  }
 }
 </script>
 

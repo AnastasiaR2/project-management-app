@@ -15,6 +15,10 @@ export const useProjectStore = defineStore("project", () => {
     projects.value = data;
   }
 
+  function addProject(project: Project) {
+    projects.value.push(project);
+  }
+
   async function dispatchGetProjects() {
     try {
       const { status, data } = await API.projects.getProjects();
@@ -36,10 +40,30 @@ export const useProjectStore = defineStore("project", () => {
     };
   }
 
+  async function dispatchCreateProject(newProject: Project) {
+    try {
+      const { status, data } = await API.projects.createProject(newProject);
+
+      if (status === 201) {
+        addProject(data);
+        return {
+          status,
+        };
+      }
+    } catch (error) {
+      const _error = error as AxiosError<string>;
+
+      return {
+        status: _error.response?.status,
+      };
+    }
+  }
+
   return {
     projects,
     initProjects,
     getProjectById,
     dispatchGetProjects,
+    dispatchCreateProject,
   };
 });
