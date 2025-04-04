@@ -5,7 +5,7 @@
       "name": "Project 1",
       "description": "Description of Project 1",
       "status": "In Progress",
-      "tasksCount": 5,
+      "tasksCount": 2,
       "createdAt": "2025-04-10"
     },
     {
@@ -13,7 +13,7 @@
       "name": "Project 2",
       "description": "Description of Project 2",
       "status": "Completed",
-      "tasksCount": 3,
+      "tasksCount": 1,
       "createdAt": "2025-05-10"
     }
   ],
@@ -37,7 +37,7 @@
     {
       "id": "3",
       "title": "Task 3",
-      "projectId": "1",
+      "projectId": "2",
       "assignee": "Alice",
       "status": "Done",
       "dueDate": "2025-04-12"

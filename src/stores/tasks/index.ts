@@ -7,9 +7,9 @@ import { AxiosError } from "axios";
 export const useTaskStore = defineStore("task", () => {
   const tasks = ref<Task[]>([]);
 
-  const getTasksByProjectId = computed((projectId) =>
-    tasks.value.filter((task) => task.projectId === projectId),
-  );
+  const getTasksByProjectId = (projectId: string) => {
+    return computed(() => tasks.value.filter((task) => task.projectId === projectId));
+  };
 
   function initTasks(data: Task[]) {
     tasks.value = data;

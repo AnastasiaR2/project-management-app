@@ -1,5 +1,7 @@
+<script setup lang="ts">
+import TasksTable from "@/components/TasksTable.vue";
+</script>
+
 <template>
-  <div>
-    <h1>This is a project page</h1>
-  </div>
+  <TasksTable />
 </template>

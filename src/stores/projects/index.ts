@@ -7,7 +7,9 @@ import { AxiosError } from "axios";
 export const useProjectStore = defineStore("project", () => {
   const projects = ref<Project[]>([]);
 
-  const getProjectById = computed((id) => projects.value.find((p) => p.id === id));
+  const getProjectById = (id: string) => {
+    return computed(() => projects.value.find((project) => project.id === id));
+  };
 
   function initProjects(data: Project[]) {
     projects.value = data;
