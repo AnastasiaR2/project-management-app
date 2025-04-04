@@ -22,7 +22,7 @@
       "id": "f46ecdf8-d91a-4c4b-8db2-177f50e26df4",
       "title": "Task 1",
       "projectId": "3b12f1df-5232-4f15-bb6b-88d8b7f6b8f4",
-      "assignee": "John",
+      "assignee": "John Smith",
       "status": "To Do",
       "dueDate": "2025-04-10"
     },
@@ -30,7 +30,7 @@
       "id": "da48e860-2797-4351-9bd8-f2e1c3f1c5f0",
       "title": "Task 2",
       "projectId": "3b12f1df-5232-4f15-bb6b-88d8b7f6b8f4",
-      "assignee": "Alice",
+      "assignee": "Alice Young",
       "status": "In Progress",
       "dueDate": "2025-04-12"
     },
@@ -38,7 +38,7 @@
       "id": "865b6b1e-1675-44e5-bb76-e5e14d82667e",
       "title": "Task 3",
       "projectId": "7d9c4e9c-01c2-4f6a-94e8-8c0b7d9a6c31",
-      "assignee": "Alice",
+      "assignee": "Alice Young",
       "status": "Done",
       "dueDate": "2025-04-15"
     }
