@@ -2,9 +2,16 @@
 import ProjectsTable from "@/features/projects/ProjectsTable.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppButton from "@/components/AppButton.vue";
+import ProjectForm from "@/features/projects/ProjectForm.vue";
+import type { Project } from "@/services/projects/types";
 
 import { ref } from "vue";
 const isModalOpen = ref(false);
+
+function handleAddProject(project: Project) {
+  console.log("New project:", project);
+  isModalOpen.value = false;
+}
 </script>
 
 <template>
@@ -12,8 +19,7 @@ const isModalOpen = ref(false);
     <h1 class="project-title">Projects</h1>
     <AppButton @click="isModalOpen = true">Add Project</AppButton>
     <AppModal v-if="isModalOpen" @close="isModalOpen = false">
-      <template #title>Add Project</template>
-      <template #body> Complete this form to add your next project! </template>
+      <template #body><ProjectForm @submit="handleAddProject" /></template>
     </AppModal>
     <ProjectsTable />
   </main>
