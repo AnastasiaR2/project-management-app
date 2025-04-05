@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
+
+const APP_MAX_WIDTH = 1280;
+
 interface Column {
   key: string;
   label: string;
@@ -72,11 +75,13 @@ onBeforeUnmount(() => {
           <th
             v-for="(column, i) in columns"
             :key="`${column.key}${i}`"
-            :style="{ width: (columnWidths[column.key] || 150) + 'px' }"
+            :style="{
+              width: (columnWidths[column.key] || APP_MAX_WIDTH / columns.length) + 'px',
+            }"
           >
             {{ column.label }}
             <span
-              v-if="resizable && i !== columns.length - 1"
+              v-if="resizable"
               class="resize-handle"
               @mousedown="startResizing($event, column.key)"
             ></span>
@@ -115,6 +120,16 @@ onBeforeUnmount(() => {
     padding: 12px;
     border: 1px solid $border-color;
     text-align: left;
+  }
+
+  tr td:first-child,
+  tr th:first-child {
+    border-left: 0;
+  }
+
+  tr td:last-child,
+  tr th:last-child {
+    border-right: 0;
   }
 
   th {
