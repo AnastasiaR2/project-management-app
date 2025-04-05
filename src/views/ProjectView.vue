@@ -10,6 +10,7 @@ import { useTaskStore } from "@/stores/tasks";
 import type { Task } from "@/services/tasks/types";
 
 const isModalOpen = ref(false);
+const currentTask = ref({} as Task);
 
 const route = useRoute();
 const projectStore = useProjectStore();
@@ -33,6 +34,29 @@ async function handleAddTask(task: Task) {
     console.error("Failed to create task:", response?.status);
   }
 }
+
+async function handleUpdateTask(task: Task) {
+  const response = await taskStore.dispatchUpdateTask(task);
+
+  if (response?.status === 200) {
+    isModalOpen.value = false;
+  } else {
+    console.error("Failed to update task:", response?.status);
+  }
+}
+
+function handleEditTask(task: Task) {
+  currentTask.value = task;
+  isModalOpen.value = true;
+}
+
+function submitTask(task: Task) {
+  if (currentTask.value && currentTask.value.id) {
+    handleUpdateTask(task);
+  } else {
+    handleAddTask(task);
+  }
+}
 </script>
 
 <template>
@@ -42,8 +66,8 @@ async function handleAddTask(task: Task) {
   </div>
   <AppModal v-if="isModalOpen" @close="isModalOpen = false">
     <template #body>
-      <TaskForm :projectId="project?.id as string" @submit="handleAddTask" />
+      <TaskForm :projectId="project?.id as string" @submit="submitTask" :task="currentTask" />
     </template>
   </AppModal>
-  <TasksTable />
+  <TasksTable @edit-btn-clicked="handleEditTask" />
 </template>

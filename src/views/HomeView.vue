@@ -53,7 +53,9 @@ function submitProject(project: Project) {
       <AppButton @click="isModalOpen = true">Add Project</AppButton>
     </div>
     <AppModal v-if="isModalOpen" @close="isModalOpen = false">
-      <template #body><ProjectForm @submit="submitProject" :project="currentProject" /></template>
+      <template #body>
+        <ProjectForm @submit="submitProject" :project="currentProject" />
+      </template>
     </AppModal>
     <ProjectsTable @edit-btn-clicked="handleEditProject" />
   </main>
