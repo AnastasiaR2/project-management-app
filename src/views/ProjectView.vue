@@ -9,8 +9,10 @@ import { useProjectStore } from "@/stores/projects";
 import { useTaskStore } from "@/stores/tasks";
 import type { Task } from "@/services/tasks/types";
 
-const isModalOpen = ref(false);
+const isAddOrEditModalOpen = ref(false);
+const isDeleteModalOpen = ref(false);
 const currentTask = ref({} as Task);
+const taskIdToDelete = ref("");
 
 const route = useRoute();
 const projectStore = useProjectStore();
@@ -23,7 +25,7 @@ async function handleAddTask(task: Task) {
   const response = await taskStore.dispatchCreateTask(task);
 
   if (response?.status === 201) {
-    isModalOpen.value = false;
+    isAddOrEditModalOpen.value = false;
     if (projectId) {
       await projectStore.dispatchUpdateProject({
         ...project.value,
@@ -39,15 +41,36 @@ async function handleUpdateTask(task: Task) {
   const response = await taskStore.dispatchUpdateTask(task);
 
   if (response?.status === 200) {
-    isModalOpen.value = false;
+    isAddOrEditModalOpen.value = false;
   } else {
     console.error("Failed to update task:", response?.status);
   }
 }
 
+async function handleDeleteTask(id: string) {
+  const response = await taskStore.dispatchDeleteTask(id);
+
+  if (response?.status === 200) {
+    isDeleteModalOpen.value = false;
+    if (projectId) {
+      await projectStore.dispatchUpdateProject({
+        ...project.value,
+        tasksCount: taskStore.getTasksByProjectId(projectId).value.length,
+      });
+    }
+  } else {
+    console.error("Failed to delete task:", response?.status);
+  }
+}
+
 function handleEditTask(task: Task) {
   currentTask.value = task;
-  isModalOpen.value = true;
+  isAddOrEditModalOpen.value = true;
+}
+
+function handleDeleteModalOpen(id: string) {
+  taskIdToDelete.value = id;
+  isDeleteModalOpen.value = true;
 }
 
 function submitTask(task: Task) {
@@ -62,12 +85,29 @@ function submitTask(task: Task) {
 <template>
   <div class="main-title-wrapper">
     <h1 class="project-title">Project: {{ project?.name }}</h1>
-    <AppButton @click="isModalOpen = true">Add Task</AppButton>
+    <AppButton @click="isAddOrEditModalOpen = true">Add Task</AppButton>
   </div>
-  <AppModal v-if="isModalOpen" @close="isModalOpen = false">
+  <AppModal v-if="isAddOrEditModalOpen" @close="isAddOrEditModalOpen = false">
     <template #body>
       <TaskForm :projectId="project?.id as string" @submit="submitTask" :task="currentTask" />
     </template>
   </AppModal>
-  <TasksTable @edit-btn-clicked="handleEditTask" />
+  <AppModal v-if="isDeleteModalOpen" @close="isDeleteModalOpen = false">
+    <template #title> Are you sure you want to delete this task? </template>
+    <template #body>
+      <div class="buttons-wrapper">
+        <AppButton @click="isDeleteModalOpen = false">Cancel</AppButton>
+        <AppButton @click="handleDeleteTask(taskIdToDelete)">Delete</AppButton>
+      </div>
+    </template>
+  </AppModal>
+  <TasksTable @edit-btn-clicked="handleEditTask" @delete-btn-clicked="handleDeleteModalOpen" />
 </template>
+
+<style scoped lang="scss">
+.buttons-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+</style>

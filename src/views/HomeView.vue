@@ -48,7 +48,7 @@ async function handleDeleteProject(id: string) {
       await taskStore.dispatchDeleteTask(taskId);
     }
   } else {
-    console.error("Failed to update project:", response?.status);
+    console.error("Failed to delete project:", response?.status);
   }
 }
 
