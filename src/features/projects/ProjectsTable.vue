@@ -26,5 +26,11 @@ function rowSelected(id: string) {
 </script>
 
 <template>
-  <DataTable :columns="columns" :data="projectStore.projects" @row-selected="rowSelected" />
+  <DataTable
+    :columns="columns"
+    :data="projectStore.projects"
+    table-id="projects - table"
+    :resizable="true"
+    @row-selected="rowSelected"
+  />
 </template>

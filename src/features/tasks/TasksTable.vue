@@ -25,5 +25,5 @@ const filteredTasks = taskStore.getTasksByProjectId(projectId);
 </script>
 
 <template>
-  <DataTable :columns="columns" :data="filteredTasks" />
+  <DataTable :columns="columns" :data="filteredTasks" table-id="tasks - table" :resizable="true" />
 </template>
