@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  type?: "button" | "icon-button";
+  variant?: "button" | "icon-button";
 }>();
 </script>
 
 <template>
-  <button :class="[type ?? 'button']"><slot /></button>
+  <button :class="[variant ?? 'button']"><slot /></button>
 </template>
 
 <style scoped lang="scss">

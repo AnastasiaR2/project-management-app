@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import AppButton from "./AppButton.vue";
-import type { Project } from "@/services/projects/types";
-import type { Task } from "@/services/tasks/types";
 
 const APP_MAX_WIDTH = 1280;
 
@@ -12,7 +10,7 @@ interface Column {
 }
 
 const props = defineProps<{
-  data: (Project | Task)[];
+  data: Record<string, string | number>[];
   columns: Column[];
   tableId: string;
   resizable?: boolean;
@@ -20,13 +18,9 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   rowSelected: [id: string];
-  editBtnClicked: [item: Project | Task];
+  editBtnClicked: [item: Record<string, string | number>];
   deleteBtnClicked: [id: string];
 }>();
-
-const getValue = (item: Project | Task, key: string) => {
-  return (item as unknown as Record<string, string | number>)[key];
-};
 
 const columnWidths = ref<{ [key: string]: number }>({});
 const tableRef = ref<HTMLTableElement | null>(null);
@@ -98,27 +92,29 @@ onBeforeUnmount(() => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id)">
+        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id as string)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             <template v-if="column.key === 'actions'">
-              <AppButton
-                type="icon-button"
-                @click.stop="emits('editBtnClicked', item)"
-                title="Edit"
-              >
-                <img src="@/components/icons/edit-icon.svg" alt="Edit" />
-              </AppButton>
+              <div class="buttons-wrapper">
+                <AppButton
+                  variant="icon-button"
+                  @click.stop="emits('editBtnClicked', item)"
+                  title="Edit"
+                >
+                  <img src="@/components/icons/edit-icon.svg" alt="Edit" />
+                </AppButton>
 
-              <AppButton
-                type="icon-button"
-                @click.stop="emits('deleteBtnClicked', item.id)"
-                title="Delete"
-              >
-                <img src="@/components/icons/delete-icon.svg" alt="Delete" />
-              </AppButton>
+                <AppButton
+                  variant="icon-button"
+                  @click.stop="emits('deleteBtnClicked', item.id as string)"
+                  title="Delete"
+                >
+                  <img src="@/components/icons/delete-icon.svg" alt="Delete" />
+                </AppButton>
+              </div>
             </template>
             <template v-else>
-              {{ getValue(item, column.key) }}
+              {{ item[column.key] }}
             </template>
           </td>
         </tr>
@@ -179,6 +175,10 @@ onBeforeUnmount(() => {
 
   tr:hover {
     background-color: rgba($primary-color, 0.1);
+  }
+
+  .buttons-wrapper {
+    text-align: right;
   }
 }
 </style>

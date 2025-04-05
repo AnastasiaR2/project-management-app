@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import DataTable from "@/components/DataTable.vue";
 import { useProjectStore } from "@/stores/projects";
+import type { Project } from "@/services/projects/types";
 
 const columns = [
   { key: "id", label: "ID" },
@@ -14,6 +15,11 @@ const columns = [
   { key: "actions", label: "" },
 ];
 
+const emit = defineEmits<{
+  editBtnClicked: [project: Project];
+  deleteBtnClicked: [id: string];
+}>();
+
 const router = useRouter();
 const projectStore = useProjectStore();
 
@@ -24,6 +30,14 @@ onMounted(async () => {
 function rowSelected(id: string) {
   router.push({ name: "project", params: { id } });
 }
+
+function editBtnClicked(item: unknown) {
+  emit("editBtnClicked", item as Project);
+}
+
+function deleteBtnClicked(id: string) {
+  emit("deleteBtnClicked", id);
+}
 </script>
 
 <template>
@@ -33,5 +47,7 @@ function rowSelected(id: string) {
     table-id="projects - table"
     :resizable="true"
     @row-selected="rowSelected"
+    @edit-btn-clicked="editBtnClicked"
+    @delete-btn-clicked="deleteBtnClicked"
   />
 </template>
