@@ -16,12 +16,19 @@ const projectStore = useProjectStore();
 const taskStore = useTaskStore();
 
 const project = projectStore.getProjectById(route.params.id as string);
+const projectId = project.value?.id;
 
 async function handleAddTask(task: Task) {
   const response = await taskStore.dispatchCreateTask(task);
 
   if (response?.status === 201) {
     isModalOpen.value = false;
+    if (projectId) {
+      await projectStore.dispatchUpdateProject({
+        ...project.value,
+        tasksCount: taskStore.getTasksByProjectId(projectId).value.length,
+      });
+    }
   } else {
     console.error("Failed to create task:", response?.status);
   }

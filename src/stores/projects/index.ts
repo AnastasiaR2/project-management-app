@@ -21,6 +21,20 @@ export const useProjectStore = defineStore(
       projects.value.push(project);
     }
 
+    function updateProject(updatedProject: Project) {
+      const index = projects.value.findIndex((project) => updatedProject.id === project.id);
+      if (index === -1) return;
+
+      projects.value[index] = updatedProject;
+    }
+
+    function deleteProject(id: string) {
+      const index = projects.value.findIndex((project) => project.id === id);
+      if (index === -1) return;
+
+      projects.value.splice(index, 1);
+    }
+
     async function dispatchGetProjects() {
       try {
         const { status, data } = await API.projects.getProjects();
@@ -61,12 +75,52 @@ export const useProjectStore = defineStore(
       }
     }
 
+    async function dispatchUpdateProject(updatedProject: Project) {
+      try {
+        const { status, data } = await API.projects.updateProject(updatedProject);
+
+        if (status === 200) {
+          updateProject(data);
+          return {
+            status,
+          };
+        }
+      } catch (error) {
+        const _error = error as AxiosError<string>;
+
+        return {
+          status: _error.response?.status,
+        };
+      }
+    }
+
+    async function dispatchDeleteProject(id: string) {
+      try {
+        const { status } = await API.projects.deleteProject(id);
+
+        if (status === 200) {
+          deleteProject(id);
+          return {
+            status,
+          };
+        }
+      } catch (error) {
+        const _error = error as AxiosError<string>;
+
+        return {
+          status: _error.response?.status,
+        };
+      }
+    }
+
     return {
       projects,
       initProjects,
       getProjectById,
       dispatchGetProjects,
       dispatchCreateProject,
+      dispatchUpdateProject,
+      dispatchDeleteProject,
     };
   },
   {
