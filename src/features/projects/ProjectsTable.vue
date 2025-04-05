@@ -11,6 +11,7 @@ const columns = [
   { key: "status", label: "Status" },
   { key: "tasksCount", label: "Tasks Count" },
   { key: "createdAt", label: "Created At" },
+  { key: "actions", label: "" },
 ];
 
 const router = useRouter();

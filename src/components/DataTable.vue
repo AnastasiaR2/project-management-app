@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
+import AppButton from "./AppButton.vue";
+import type { Project } from "@/services/projects/types";
+import type { Task } from "@/services/tasks/types";
 
 const APP_MAX_WIDTH = 1280;
 
@@ -9,7 +12,7 @@ interface Column {
 }
 
 const props = defineProps<{
-  data: Record<string, string | number>[];
+  data: (Project | Task)[];
   columns: Column[];
   tableId: string;
   resizable?: boolean;
@@ -17,7 +20,13 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   rowSelected: [id: string];
+  editBtnClicked: [item: Project | Task];
+  deleteBtnClicked: [id: string];
 }>();
+
+const getValue = (item: Project | Task, key: string) => {
+  return (item as unknown as Record<string, string | number>)[key];
+};
 
 const columnWidths = ref<{ [key: string]: number }>({});
 const tableRef = ref<HTMLTableElement | null>(null);
@@ -89,9 +98,28 @@ onBeforeUnmount(() => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id as string)">
+        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
-            {{ item[column.key] }}
+            <template v-if="column.key === 'actions'">
+              <AppButton
+                type="icon-button"
+                @click.stop="emits('editBtnClicked', item)"
+                title="Edit"
+              >
+                <img src="@/components/icons/edit-icon.svg" alt="Edit" />
+              </AppButton>
+
+              <AppButton
+                type="icon-button"
+                @click.stop="emits('deleteBtnClicked', item.id)"
+                title="Delete"
+              >
+                <img src="@/components/icons/delete-icon.svg" alt="Delete" />
+              </AppButton>
+            </template>
+            <template v-else>
+              {{ getValue(item, column.key) }}
+            </template>
           </td>
         </tr>
       </tbody>

@@ -10,6 +10,7 @@ const columns = [
   { key: "assignee", label: "Assignee" },
   { key: "status", label: "Status" },
   { key: "dueDate", label: "Due Date" },
+  { key: "actions", label: "" },
 ];
 
 const route = useRoute();
