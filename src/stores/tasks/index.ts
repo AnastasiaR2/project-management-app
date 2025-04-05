@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import type { Task } from "@/services/tasks/types";
 import { API } from "@/services";
 import { AxiosError } from "axios";
@@ -10,7 +10,7 @@ export const useTaskStore = defineStore(
     const tasks = ref<Task[]>([]);
 
     const getTasksByProjectId = (projectId: string) => {
-      return computed(() => tasks.value.filter((task) => task.projectId === projectId));
+      return tasks.value.filter((task) => task.projectId === projectId);
     };
 
     function initTasks(data: Task[]) {

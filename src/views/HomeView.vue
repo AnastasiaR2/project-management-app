@@ -42,7 +42,7 @@ async function handleDeleteProject(id: string) {
   if (response?.status === 200) {
     isDeleteModalOpen.value = false;
     const projectTasks = taskStore.getTasksByProjectId(id);
-    const projectTaskIds = projectTasks.value.map((task) => task.id);
+    const projectTaskIds = projectTasks.map((task) => task.id);
 
     for (const taskId of projectTaskIds) {
       await taskStore.dispatchDeleteTask(taskId);

@@ -91,7 +91,8 @@ onBeforeUnmount(() => {
           </th>
         </tr>
       </thead>
-      <tbody>
+      <slot v-if="$slots.tableBody" name="tableBody" />
+      <tbody v-else>
         <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id as string)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             <template v-if="column.key === 'actions'">

@@ -29,7 +29,7 @@ async function handleAddTask(task: Task) {
     if (projectId) {
       await projectStore.dispatchUpdateProject({
         ...project.value,
-        tasksCount: taskStore.getTasksByProjectId(projectId).value.length,
+        tasksCount: taskStore.getTasksByProjectId(projectId).length,
       });
     }
   } else {
@@ -55,7 +55,7 @@ async function handleDeleteTask(id: string) {
     if (projectId) {
       await projectStore.dispatchUpdateProject({
         ...project.value,
-        tasksCount: taskStore.getTasksByProjectId(projectId).value.length,
+        tasksCount: taskStore.getTasksByProjectId(projectId).length,
       });
     }
   } else {
