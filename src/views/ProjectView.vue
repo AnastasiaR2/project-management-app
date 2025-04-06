@@ -101,7 +101,7 @@ function submitTask(task: Task) {
       </div>
     </template>
   </AppModal>
-  <TasksTable @edit-btn-clicked="handleEditTask" @delete-btn-clicked="handleDeleteModalOpen" />
+  <TasksTable @edit="handleEditTask" @delete="handleDeleteModalOpen" />
 </template>
 
 <style scoped lang="scss">

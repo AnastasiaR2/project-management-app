@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import DataTable from "@/components/DataTable.vue";
+import AppTable from "@/components/AppTable.vue";
 import { useTaskStore } from "@/stores/tasks";
 import type { Task } from "@/services/tasks/types";
 import draggable from "vuedraggable";
-import AppButton from "@/components/AppButton.vue";
+import TableActions from "@/components/TableActions.vue";
 
 const columns = [
   { key: "id", label: "ID" },
@@ -16,9 +16,11 @@ const columns = [
   { key: "actions", label: "" },
 ];
 
+const taskStatuses = ["To Do", "In Progress", "Done"];
+
 const emit = defineEmits<{
-  editBtnClicked: [project: Task];
-  deleteBtnClicked: [id: string];
+  edit: [project: Task];
+  delete: [id: string];
 }>();
 
 const route = useRoute();
@@ -30,14 +32,6 @@ const projectTasks = ref(taskStore.getTasksByProjectId(projectId));
 onMounted(async () => {
   await taskStore.dispatchGetTasks();
 });
-
-function editBtnClicked(item: unknown) {
-  emit("editBtnClicked", item as Task);
-}
-
-function deleteBtnClicked(id: string) {
-  emit("deleteBtnClicked", id);
-}
 
 watch(
   () => taskStore.tasks,
@@ -60,128 +54,37 @@ async function onDragChange(evt: any, status: string) {
 </script>
 
 <template>
-  <DataTable
-    :columns="columns"
-    :data="projectTasks"
-    table-id="tasks - table"
-    :resizable="true"
-    @edit-btn-clicked="editBtnClicked"
-    @delete-btn-clicked="deleteBtnClicked"
-  >
+  <AppTable :columns="columns" :data="projectTasks" table-id="tasks-table" :resizable="true">
     <template #tableBody>
-      <div class="table-section">To Do</div>
-      <draggable
-        :list="projectTasks"
-        tag="tbody"
-        item-key="id"
-        group="tasks"
-        @change="(e) => onDragChange(e, 'To Do')"
-      >
-        <template #item="{ element: item }">
-          <tr v-if="item.status === 'To Do'">
-            <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
-              <template v-if="column.key === 'actions'">
-                <div class="buttons-wrapper">
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('editBtnClicked', item)"
-                    title="Edit"
-                  >
-                    <img src="@/components/icons/edit-icon.svg" alt="Edit" />
-                  </AppButton>
-
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('deleteBtnClicked', item.id as string)"
-                    title="Delete"
-                  >
-                    <img src="@/components/icons/delete-icon.svg" alt="Delete" />
-                  </AppButton>
-                </div>
-              </template>
-              <template v-else>
-                {{ item[column.key] }}
-              </template>
-            </td>
-          </tr>
-        </template>
-      </draggable>
-      <div class="table-section">In Progress</div>
-      <draggable
-        :list="projectTasks"
-        tag="tbody"
-        item-key="id"
-        group="tasks"
-        @change="(e) => onDragChange(e, 'In Progress')"
-      >
-        <template #item="{ element: item }">
-          <tr v-if="item.status === 'In Progress'">
-            <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
-              <template v-if="column.key === 'actions'">
-                <div class="buttons-wrapper">
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('editBtnClicked', item)"
-                    title="Edit"
-                  >
-                    <img src="@/components/icons/edit-icon.svg" alt="Edit" />
-                  </AppButton>
-
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('deleteBtnClicked', item.id as string)"
-                    title="Delete"
-                  >
-                    <img src="@/components/icons/delete-icon.svg" alt="Delete" />
-                  </AppButton>
-                </div>
-              </template>
-              <template v-else>
-                {{ item[column.key] }}
-              </template>
-            </td>
-          </tr>
-        </template>
-      </draggable>
-      <div class="table-section">Done</div>
-      <draggable
-        :list="projectTasks"
-        tag="tbody"
-        item-key="id"
-        group="tasks"
-        @change="(e) => onDragChange(e, 'Done')"
-      >
-        <template #item="{ element: item }">
-          <tr v-if="item.status === 'Done'">
-            <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
-              <template v-if="column.key === 'actions'">
-                <div class="buttons-wrapper">
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('editBtnClicked', item)"
-                    title="Edit"
-                  >
-                    <img src="@/components/icons/edit-icon.svg" alt="Edit" />
-                  </AppButton>
-
-                  <AppButton
-                    variant="icon-button"
-                    @click.stop="emits('deleteBtnClicked', item.id as string)"
-                    title="Delete"
-                  >
-                    <img src="@/components/icons/delete-icon.svg" alt="Delete" />
-                  </AppButton>
-                </div>
-              </template>
-              <template v-else>
-                {{ item[column.key] }}
-              </template>
-            </td>
-          </tr>
-        </template>
-      </draggable>
+      <template v-for="status in taskStatuses" :key="status">
+        <div class="table-section">{{ status }}</div>
+        <draggable
+          :list="projectTasks"
+          tag="tbody"
+          item-key="id"
+          group="tasks"
+          @change="(e) => onDragChange(e, status)"
+        >
+          <template #item="{ element: item }">
+            <tr v-if="item.status === status">
+              <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
+                <template v-if="column.key === 'actions'">
+                  <TableActions
+                    :item
+                    @edit="(item: unknown) => emit('edit', item as Task)"
+                    @delete="emit('delete', $event)"
+                  />
+                </template>
+                <template v-else>
+                  {{ item[column.key] }}
+                </template>
+              </td>
+            </tr>
+          </template>
+        </draggable>
+      </template>
     </template>
-  </DataTable>
+  </AppTable>
 </template>
 
 <style lang="scss" scoped>

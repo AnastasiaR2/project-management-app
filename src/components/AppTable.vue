@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
-import AppButton from "./AppButton.vue";
+import TableActions from "./TableActions.vue";
 
 const APP_MAX_WIDTH = 1280;
 
@@ -16,10 +16,10 @@ const props = defineProps<{
   resizable?: boolean;
 }>();
 
-const emits = defineEmits<{
+const emit = defineEmits<{
   rowSelected: [id: string];
-  editBtnClicked: [item: Record<string, string | number>];
-  deleteBtnClicked: [id: string];
+  edit: [item: Record<string, string | number>];
+  delete: [id: string];
 }>();
 
 const columnWidths = ref<{ [key: string]: number }>({});
@@ -93,26 +93,10 @@ onBeforeUnmount(() => {
       </thead>
       <slot v-if="$slots.tableBody" name="tableBody" />
       <tbody v-else>
-        <tr v-for="item in data" :key="item.id" @click="emits('rowSelected', item.id as string)">
+        <tr v-for="item in data" :key="item.id" @click="emit('rowSelected', item.id as string)">
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             <template v-if="column.key === 'actions'">
-              <div class="buttons-wrapper">
-                <AppButton
-                  variant="icon-button"
-                  @click.stop="emits('editBtnClicked', item)"
-                  title="Edit"
-                >
-                  <img src="@/components/icons/edit-icon.svg" alt="Edit" />
-                </AppButton>
-
-                <AppButton
-                  variant="icon-button"
-                  @click.stop="emits('deleteBtnClicked', item.id as string)"
-                  title="Delete"
-                >
-                  <img src="@/components/icons/delete-icon.svg" alt="Delete" />
-                </AppButton>
-              </div>
+              <TableActions :item @edit="emit('edit', $event)" @delete="emit('delete', $event)" />
             </template>
             <template v-else>
               {{ item[column.key] }}
@@ -176,10 +160,6 @@ onBeforeUnmount(() => {
 
   tr:hover {
     background-color: rgba($primary-color, 0.1);
-  }
-
-  .buttons-wrapper {
-    text-align: right;
   }
 }
 </style>

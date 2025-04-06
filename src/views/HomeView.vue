@@ -92,10 +92,7 @@ function submitProject(project: Project) {
         </div>
       </template>
     </AppModal>
-    <ProjectsTable
-      @edit-btn-clicked="handleEditProject"
-      @delete-btn-clicked="handleDeleteModalOpen"
-    />
+    <ProjectsTable @edit="handleEditProject" @delete="handleDeleteModalOpen" />
   </main>
 </template>
 

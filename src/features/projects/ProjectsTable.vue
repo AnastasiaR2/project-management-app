@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import DataTable from "@/components/DataTable.vue";
+import AppTable from "@/components/AppTable.vue";
 import { useProjectStore } from "@/stores/projects";
 import type { Project } from "@/services/projects/types";
 
@@ -16,8 +16,8 @@ const columns = [
 ];
 
 const emit = defineEmits<{
-  editBtnClicked: [project: Project];
-  deleteBtnClicked: [id: string];
+  edit: [project: Project];
+  delete: [id: string];
 }>();
 
 const router = useRouter();
@@ -30,24 +30,16 @@ onMounted(async () => {
 function rowSelected(id: string) {
   router.push({ name: "project", params: { id } });
 }
-
-function editBtnClicked(item: unknown) {
-  emit("editBtnClicked", item as Project);
-}
-
-function deleteBtnClicked(id: string) {
-  emit("deleteBtnClicked", id);
-}
 </script>
 
 <template>
-  <DataTable
+  <AppTable
     :columns="columns"
     :data="projectStore.projects"
     table-id="projects - table"
     :resizable="true"
     @row-selected="rowSelected"
-    @edit-btn-clicked="editBtnClicked"
-    @delete-btn-clicked="deleteBtnClicked"
+    @edit="(item: unknown) => emit('edit', item as Project)"
+    @delete="emit('delete', $event)"
   />
 </template>
