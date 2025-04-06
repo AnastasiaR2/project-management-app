@@ -1,39 +1,62 @@
-# project-management-app
+# 📁 Project Management App
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple single-page application for managing projects and tasks. Built with **Vue 3**, **TypeScript**, and **JSON Server**.
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 🚀 Features
 
-## Type Support for `.vue` Imports in TS
+- ✅ Project and Task management
+- ✅ Table with resizable columns
+- ✅ Drag-and-drop support for reordering items
+- ✅ Modal forms for adding, editing, and deleting
+- ✅ State management with Pinia
+- ✅ Type-safe components using TypeScript
+- ✅ Mock API using JSON Server
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+## 🛠 Technologies Used
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- [Vue 3](https://vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Pinia](https://pinia.vuejs.org/) (state management)
+- [Vue Router](https://router.vuejs.org/)
+- [SCSS](https://sass-lang.com/)
+- [JSON Server](https://github.com/typicode/json-server) (mock API)
+- [Vite](https://vitejs.dev/) (fast dev/build tooling)
 
-## Project Setup
+---
 
-```sh
+## 📦 Project Setup
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/AnastasiaR2/project-management-app.git
+cd project-management-app
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 3. Run the development server
 
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+The app will be available at [http://localhost:5173](http://localhost:5173) by default.
 
-```sh
-npm run build
+### 4. Run the mock API (JSON Server)
+
+```bash
+npm run server
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+This starts a mock REST API at [http://localhost:5000](http://localhost:5000), using the `db.json` file in the `/db` directory as the database.
 
-```sh
-npm run lint
-```
+---
