@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { Project } from "@/services/projects/types";
+import type { Project } from "@/features/projects/project.types";
 import { API } from "@/services";
 import { AxiosError } from "axios";
 

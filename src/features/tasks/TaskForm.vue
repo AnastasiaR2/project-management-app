@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import type { Task } from "@/services/tasks/types";
+import type { Task } from "@/features/tasks/task.types";
 import AppButton from "@/components/AppButton.vue";
-
-const statusOptions = ["To Do", "In Progress", "Done"];
+import { taskStatuses } from "@/constants/task";
 
 const assigneeOptions = ["John Smith", "Erika Berger", "Alice Young", "Peter Parker"];
 
@@ -56,7 +55,7 @@ function handleSubmit() {
     <div class="form-group" v-if="isEditing">
       <label for="status">Status</label>
       <select id="status" v-model="status">
-        <option v-for="option in statusOptions" :key="option" :value="option">
+        <option v-for="option in taskStatuses" :key="option" :value="option">
           {{ option }}
         </option>
       </select>

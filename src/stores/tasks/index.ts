@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Task } from "@/services/tasks/types";
+import type { Task } from "@/features/tasks/task.types";
 import { API } from "@/services";
 import { AxiosError } from "axios";
 

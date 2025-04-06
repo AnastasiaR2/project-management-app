@@ -1,5 +1,5 @@
 import http from "@/services/api";
-import type { Project } from "./types";
+import type { Project } from "@/features/projects/project.types";
 
 async function getProjects() {
   return await http.get<Project[]>("projects");

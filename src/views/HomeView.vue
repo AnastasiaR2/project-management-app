@@ -4,7 +4,8 @@ import ProjectsTable from "@/features/projects/ProjectsTable.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppButton from "@/components/AppButton.vue";
 import ProjectForm from "@/features/projects/ProjectForm.vue";
-import type { Project } from "@/services/projects/types";
+import type { Project } from "@/features/projects/project.types";
+import type { Task } from "@/features/tasks/task.types";
 import { useProjectStore } from "@/stores/projects";
 import { useTaskStore } from "@/stores/tasks";
 
@@ -42,7 +43,7 @@ async function handleDeleteProject(id: string) {
   if (response?.status === 200) {
     isDeleteModalOpen.value = false;
     const projectTasks = taskStore.getTasksByProjectId(id);
-    const projectTaskIds = projectTasks.map((task) => task.id);
+    const projectTaskIds = projectTasks.map((task: Task) => task.id);
 
     for (const taskId of projectTaskIds) {
       await taskStore.dispatchDeleteTask(taskId);

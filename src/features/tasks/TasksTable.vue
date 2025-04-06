@@ -3,9 +3,10 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import AppTable from "@/components/AppTable.vue";
 import { useTaskStore } from "@/stores/tasks";
-import type { Task } from "@/services/tasks/types";
+import type { Task } from "@/features/tasks/task.types";
 import draggable from "vuedraggable";
 import TableActions from "@/components/TableActions.vue";
+import { taskStatuses, type TaskStatus } from "@/constants/task";
 
 const columns = [
   { key: "id", label: "ID" },
@@ -15,8 +16,6 @@ const columns = [
   { key: "dueDate", label: "Due Date" },
   { key: "actions", label: "" },
 ];
-
-const taskStatuses = ["To Do", "In Progress", "Done"];
 
 const emit = defineEmits<{
   edit: [project: Task];
@@ -42,7 +41,7 @@ watch(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function onDragChange(evt: any, status: string) {
+async function onDragChange(evt: any, status: TaskStatus) {
   if (evt.added) {
     const task = evt.added.element;
     await taskStore.dispatchUpdateTask({
@@ -86,68 +85,3 @@ async function onDragChange(evt: any, status: string) {
     </template>
   </AppTable>
 </template>
-
-<style lang="scss" scoped>
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.table {
-  width: max-content;
-  min-width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  background: $color-white;
-  border-radius: $border-radius;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid $border-color;
-    text-align: left;
-  }
-
-  tr td:first-child,
-  tr th:first-child {
-    border-left: 0;
-  }
-
-  tr td:last-child,
-  tr th:last-child {
-    border-right: 0;
-  }
-
-  th {
-    background-color: $primary-color;
-    font-weight: bold;
-    color: $color-white;
-    position: relative;
-  }
-
-  .resize-handle {
-    width: 5px;
-    height: 100%;
-    cursor: col-resize;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  }
-
-  tr:hover {
-    background-color: rgba($primary-color, 0.1);
-  }
-
-  .buttons-wrapper {
-    text-align: right;
-  }
-
-  .table-section {
-    padding: 12px;
-    font-weight: bold;
-  }
-}
-</style>

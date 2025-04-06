@@ -1,3 +1,5 @@
+@use "./variables" as *;
+
 .form {
   display: flex;
   flex-direction: column;
@@ -24,4 +26,58 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+}
+
+.table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: $color-white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  th,
+  td {
+    padding: 12px;
+    border: 1px solid $border-color;
+    text-align: left;
+  }
+
+  tr td:first-child,
+  tr th:first-child {
+    border-left: 0;
+  }
+
+  tr td:last-child,
+  tr th:last-child {
+    border-right: 0;
+  }
+
+  th {
+    background-color: $primary-color;
+    font-weight: bold;
+    color: $color-white;
+    position: relative;
+  }
+
+  .resize-handle {
+    width: 5px;
+    height: 100%;
+    cursor: col-resize;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  tr:hover {
+    background-color: rgba($primary-color, 0.1);
+  }
+
+  .table-section {
+    padding: 12px;
+    font-weight: bold;
+  }
 }

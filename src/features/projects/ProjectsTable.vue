@@ -3,7 +3,7 @@ import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import AppTable from "@/components/AppTable.vue";
 import { useProjectStore } from "@/stores/projects";
-import type { Project } from "@/services/projects/types";
+import type { Project } from "@/features/projects/project.types";
 
 const columns = [
   { key: "id", label: "ID" },

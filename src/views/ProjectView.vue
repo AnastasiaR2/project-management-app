@@ -7,7 +7,7 @@ import AppButton from "@/components/AppButton.vue";
 import TaskForm from "@/features/tasks/TaskForm.vue";
 import { useProjectStore } from "@/stores/projects";
 import { useTaskStore } from "@/stores/tasks";
-import type { Task } from "@/services/tasks/types";
+import type { Task } from "@/features/tasks/task.types";
 
 const isAddOrEditModalOpen = ref(false);
 const isDeleteModalOpen = ref(false);

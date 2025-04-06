@@ -1,5 +1,5 @@
 import http from "@/services/api";
-import type { Task } from "./types";
+import type { Task } from "@/features/tasks/task.types";
 
 async function getTasks() {
   return await http.get<Task[]>("tasks");

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import type { Project } from "@/services/projects/types";
+import type { Project } from "@/features/projects/project.types";
 import AppButton from "@/components/AppButton.vue";
-
-const statusOptions = ["Not Started", "In Progress", "Completed"];
+import { projectStatuses } from "@/constants/project";
 
 const emit = defineEmits<{
   submit: [project: Project];
@@ -48,7 +47,7 @@ function handleSubmit() {
     <div class="form-group" v-if="isEditing">
       <label for="status">Status</label>
       <select id="status" v-model="status">
-        <option v-for="option in statusOptions" :key="option" :value="option">
+        <option v-for="option in projectStatuses" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
