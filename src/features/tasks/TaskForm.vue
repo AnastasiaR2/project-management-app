@@ -63,7 +63,7 @@ function handleSubmit() {
     </div>
     <div class="form-group">
       <label for="dueDate">Due Date</label>
-      <input id="dueDate" type="date" required v-model="dueDate" />
+      <input id="dueDate" type="date" v-model="dueDate" />
     </div>
 
     <AppButton type="submit" :disabled="!isValid"
