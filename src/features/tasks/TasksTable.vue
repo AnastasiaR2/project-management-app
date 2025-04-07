@@ -9,11 +9,11 @@ import TableActions from "@/components/TableActions.vue";
 import { taskStatuses, type TaskStatus } from "@/constants/task";
 
 const columns = [
-  { key: "id", label: "ID" },
-  { key: "title", label: "Task Title" },
-  { key: "assignee", label: "Assignee" },
-  { key: "status", label: "Status" },
-  { key: "dueDate", label: "Due Date" },
+  { key: "id", label: "ID", sortable: true },
+  { key: "title", label: "Task Title", sortable: true },
+  { key: "assignee", label: "Assignee", sortable: true },
+  { key: "status", label: "Status", sortable: true },
+  { key: "dueDate", label: "Due Date", sortable: true },
   { key: "actions", label: "" },
 ];
 
@@ -54,11 +54,11 @@ async function onDragChange(evt: any, status: TaskStatus) {
 
 <template>
   <AppTable :columns="columns" :data="projectTasks" table-id="tasks-table" :resizable="true">
-    <template #tableBody>
+    <template #tableBody="{ data }">
       <template v-for="status in taskStatuses" :key="status">
         <div class="table-section">{{ status }}</div>
         <draggable
-          :list="projectTasks"
+          :list="data"
           tag="tbody"
           item-key="id"
           group="tasks"

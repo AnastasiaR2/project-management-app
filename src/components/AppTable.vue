@@ -6,6 +6,7 @@ import { APP_MAX_WIDTH } from "@/constants/ui";
 interface Column {
   key: string;
   label: string;
+  sortable?: boolean;
 }
 
 const props = defineProps<{
@@ -25,6 +26,44 @@ const columnWidths = ref<{ [key: string]: number }>({});
 const tableRef = ref<HTMLTableElement | null>(null);
 
 const storageKey = computed(() => `tableColumnWidths:${props.tableId}`);
+
+const sort = ref<{ key: string; order: "asc" | "desc" } | null>(null);
+
+function toggleSort(column: Column) {
+  if (!column.sortable) return;
+
+  if (sort.value?.key === column.key) {
+    sort.value.order = sort.value.order === "asc" ? "desc" : "asc";
+  } else {
+    sort.value = { key: column.key, order: "asc" };
+  }
+}
+
+const filteredAndSortedData = computed(() => {
+  const result = [...props.data];
+
+  // Filtering logic
+
+  if (sort.value?.key) {
+    result.sort((a, b) => {
+      const valA = a[sort.value!.key];
+      const valB = b[sort.value!.key];
+
+      if (valA == null) return 1;
+      if (valB == null) return -1;
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sort.value!.order === "asc" ? valA - valB : valB - valA;
+      }
+
+      return sort.value!.order === "asc"
+        ? String(valA).localeCompare(String(valB))
+        : String(valB).localeCompare(String(valA));
+    });
+  }
+
+  return result;
+});
 
 onMounted(() => {
   if (!props.resizable || !tableRef.value) return;
@@ -80,8 +119,19 @@ onBeforeUnmount(() => {
             :style="{
               width: (columnWidths[column.key] || APP_MAX_WIDTH / columns.length) + 'px',
             }"
+            @click="toggleSort(column)"
+            :class="{ 'sortable-header': column.sortable }"
           >
-            {{ column.label }}
+            <div class="header-content">
+              {{ column.label }}
+              <span v-if="column.sortable" class="sort-icon">
+                <template v-if="sort?.key === column.key">
+                  <span v-if="sort.order === 'asc'">▲</span>
+                  <span v-else>▼</span>
+                </template>
+                <span v-else class="dimmed">↕</span>
+              </span>
+            </div>
             <span
               v-if="resizable"
               class="resize-handle"
@@ -90,9 +140,13 @@ onBeforeUnmount(() => {
           </th>
         </tr>
       </thead>
-      <slot v-if="$slots.tableBody" name="tableBody" />
+      <slot v-if="$slots.tableBody" name="tableBody" :data="filteredAndSortedData" />
       <tbody v-else>
-        <tr v-for="item in data" :key="item.id" @click="emit('rowSelected', item.id as string)">
+        <tr
+          v-for="item in filteredAndSortedData"
+          :key="item.id"
+          @click="emit('rowSelected', item.id as string)"
+        >
           <td v-for="(column, i) in columns" :key="`${column.key}-${i}`">
             <template v-if="column.key === 'actions'">
               <TableActions :item @edit="emit('edit', $event)" @delete="emit('delete', $event)" />
@@ -106,3 +160,25 @@ onBeforeUnmount(() => {
     </table>
   </div>
 </template>
+
+<style scoped lang="scss">
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-icon {
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.sort-icon .dimmed {
+  opacity: 0.3;
+}
+</style>

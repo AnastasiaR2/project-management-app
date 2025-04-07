@@ -6,12 +6,12 @@ import { useProjectStore } from "@/stores/projects";
 import type { Project } from "@/features/projects/project.types";
 
 const columns = [
-  { key: "id", label: "ID" },
-  { key: "name", label: "Name" },
+  { key: "id", label: "ID", sortable: true },
+  { key: "name", label: "Name", sortable: true },
   { key: "description", label: "Description" },
-  { key: "status", label: "Status" },
-  { key: "tasksCount", label: "Tasks Count" },
-  { key: "createdAt", label: "Created At" },
+  { key: "status", label: "Status", sortable: true },
+  { key: "tasksCount", label: "Tasks Count", sortable: true },
+  { key: "createdAt", label: "Created At", sortable: true },
   { key: "actions", label: "" },
 ];
 
