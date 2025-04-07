@@ -17,6 +17,8 @@ const columns = [
   { key: "actions", label: "" },
 ];
 
+const assigneeOptions = ["John Smith", "Erika Berger", "Alice Young", "Peter Parker"];
+
 const emit = defineEmits<{
   edit: [project: Task];
   delete: [id: string];
@@ -27,6 +29,11 @@ const projectId = route.params.id as string;
 
 const taskStore = useTaskStore();
 const projectTasks = ref(taskStore.getTasksByProjectId(projectId));
+
+const filters = ref({
+  assignee: "",
+  status: "",
+});
 
 onMounted(async () => {
   await taskStore.dispatchGetTasks();
@@ -57,7 +64,25 @@ function countItemsByStatus(array: Task[], status: TaskStatus) {
 </script>
 
 <template>
-  <AppTable :columns="columns" :data="projectTasks" table-id="tasks-table" :resizable="true">
+  <div class="filters">
+    <select v-model="filters.status">
+      <option value="">All statuses</option>
+      <option v-for="status in taskStatuses" :key="status" :value="status">{{ status }}</option>
+    </select>
+    <select v-model="filters.assignee">
+      <option value="">All assignees</option>
+      <option v-for="assignee in assigneeOptions" :key="assignee" :value="assignee">
+        {{ assignee }}
+      </option>
+    </select>
+  </div>
+  <AppTable
+    :columns="columns"
+    :data="projectTasks"
+    table-id="tasks-table"
+    :resizable="true"
+    :filters="filters"
+  >
     <template #tableBody="{ data }">
       <template v-for="status in taskStatuses" :key="status">
         <div class="table-section">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import TableActions from "./TableActions.vue";
-import { APP_MAX_WIDTH } from "@/constants/ui";
 
 interface Column {
   key: string;
@@ -14,6 +13,7 @@ const props = defineProps<{
   columns: Column[];
   tableId: string;
   resizable?: boolean;
+  filters?: Record<string, string>;
 }>();
 
 const emit = defineEmits<{
@@ -40,9 +40,16 @@ function toggleSort(column: Column) {
 }
 
 const filteredAndSortedData = computed(() => {
-  const result = [...props.data];
+  let result = [...props.data];
 
-  // Filtering logic
+  if (props.filters) {
+    for (const [key, value] of Object.entries(props.filters)) {
+      if (!value) continue;
+      result = result.filter((item) =>
+        String(item[key]).toLowerCase().includes(value.toLowerCase()),
+      );
+    }
+  }
 
   if (sort.value?.key) {
     result.sort((a, b) => {
@@ -117,25 +124,25 @@ onBeforeUnmount(() => {
             v-for="(column, i) in columns"
             :key="`${column.key}${i}`"
             :style="{
-              width: (columnWidths[column.key] || APP_MAX_WIDTH / columns.length) + 'px',
+              width: columnWidths[column.key]
+                ? columnWidths[column.key] + 'px'
+                : 100 / columns.length + '%',
             }"
-            @click="toggleSort(column)"
-            :class="{ 'sortable-header': column.sortable }"
           >
             <div class="header-content">
               {{ column.label }}
-              <span v-if="column.sortable" class="sort-icon">
+              <span v-if="column.sortable" class="sort-icon" @click.stop="toggleSort(column)">
                 <template v-if="sort?.key === column.key">
                   <span v-if="sort.order === 'asc'">▲</span>
                   <span v-else>▼</span>
                 </template>
-                <span v-else class="dimmed">↕</span>
+                <span v-else class="dimmed">▲</span>
               </span>
             </div>
             <span
               v-if="resizable"
               class="resize-handle"
-              @mousedown="startResizing($event, column.key)"
+              @mousedown.prevent="startResizing($event, column.key)"
             ></span>
           </th>
         </tr>
@@ -168,18 +175,17 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .sortable-header {
   cursor: pointer;
-  user-select: none;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .sort-icon {
   font-size: 0.75rem;
   margin-left: 0.25rem;
+  cursor: pointer;
 }
 
 .sort-icon .dimmed {

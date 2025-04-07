@@ -21,4 +21,9 @@ select {
   border: 1px solid $border-color;
   border-radius: 4px;
   font-family: inherit;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary-color-darker, 0.5);
+  }
 }

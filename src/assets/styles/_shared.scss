@@ -28,6 +28,12 @@
   margin-bottom: 20px;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  min-width: 100%;
+}
+
 .table {
   width: max-content;
   min-width: 100%;
@@ -86,4 +92,10 @@
     padding: 24px;
     font-style: italic;
   }
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
 }

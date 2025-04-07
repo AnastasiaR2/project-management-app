@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import AppTable from "@/components/AppTable.vue";
 import { useProjectStore } from "@/stores/projects";
 import type { Project } from "@/features/projects/project.types";
+import { projectStatuses } from "@/constants/project";
 
 const columns = [
   { key: "id", label: "ID", sortable: true },
@@ -23,6 +24,11 @@ const emit = defineEmits<{
 const router = useRouter();
 const projectStore = useProjectStore();
 
+const filters = ref({
+  name: "",
+  status: "",
+});
+
 onMounted(async () => {
   await projectStore.dispatchGetProjects();
 });
@@ -33,13 +39,28 @@ function rowSelected(id: string) {
 </script>
 
 <template>
+  <div class="filters">
+    <input v-model="filters.name" placeholder="Search by name..." class="search" />
+    <select v-model="filters.status">
+      <option value="">All statuses</option>
+      <option v-for="status in projectStatuses" :key="status" :value="status">{{ status }}</option>
+    </select>
+  </div>
   <AppTable
     :columns="columns"
     :data="projectStore.projects"
     table-id="projects - table"
     :resizable="true"
+    :filters="filters"
     @row-selected="rowSelected"
     @edit="(item: unknown) => emit('edit', item as Project)"
     @delete="emit('delete', $event)"
   />
 </template>
+
+<style scoped lang="scss">
+.search {
+  width: 250px;
+  border-radius: 16px;
+}
+</style>

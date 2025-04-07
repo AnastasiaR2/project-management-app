@@ -73,28 +73,26 @@ function submitProject(project: Project) {
 </script>
 
 <template>
-  <main>
-    <div class="main-title-wrapper">
-      <h1>Projects</h1>
-      <AppButton @click="isAddOrEditModalOpen = true">Add Project</AppButton>
-    </div>
-    <AppModal v-if="isAddOrEditModalOpen" @close="isAddOrEditModalOpen = false">
-      <template #body>
-        <ProjectForm @submit="submitProject" :project="currentProject" />
-      </template>
-    </AppModal>
-    <AppModal v-if="isDeleteModalOpen" @close="isDeleteModalOpen = false">
-      <template #title> Are you sure you want to delete this project? </template>
-      <template #body>
-        <p>All associated tasks will be removed as well.</p>
-        <div class="buttons-wrapper">
-          <AppButton @click="isDeleteModalOpen = false">Cancel</AppButton>
-          <AppButton @click="handleDeleteProject(projectIdToDelete)">Delete</AppButton>
-        </div>
-      </template>
-    </AppModal>
-    <ProjectsTable @edit="handleEditProject" @delete="handleDeleteModalOpen" />
-  </main>
+  <div class="main-title-wrapper">
+    <h1>Projects</h1>
+    <AppButton @click="isAddOrEditModalOpen = true">Add Project</AppButton>
+  </div>
+  <AppModal v-if="isAddOrEditModalOpen" @close="isAddOrEditModalOpen = false">
+    <template #body>
+      <ProjectForm @submit="submitProject" :project="currentProject" />
+    </template>
+  </AppModal>
+  <AppModal v-if="isDeleteModalOpen" @close="isDeleteModalOpen = false">
+    <template #title> Are you sure you want to delete this project? </template>
+    <template #body>
+      <p>All associated tasks will be removed as well.</p>
+      <div class="buttons-wrapper">
+        <AppButton @click="isDeleteModalOpen = false">Cancel</AppButton>
+        <AppButton @click="handleDeleteProject(projectIdToDelete)">Delete</AppButton>
+      </div>
+    </template>
+  </AppModal>
+  <ProjectsTable @edit="handleEditProject" @delete="handleDeleteModalOpen" />
 </template>
 
 <style scoped lang="scss">
