@@ -50,13 +50,19 @@ async function onDragChange(evt: any, status: TaskStatus) {
     });
   }
 }
+
+function countItemsByStatus(array: Task[], status: TaskStatus) {
+  return array.filter((item) => item.status === status).length;
+}
 </script>
 
 <template>
   <AppTable :columns="columns" :data="projectTasks" table-id="tasks-table" :resizable="true">
     <template #tableBody="{ data }">
       <template v-for="status in taskStatuses" :key="status">
-        <div class="table-section">{{ status }}</div>
+        <div class="table-section">
+          {{ `${status} (${countItemsByStatus(data as unknown as Task[], status)})` }}
+        </div>
         <draggable
           :list="data"
           tag="tbody"

@@ -26,7 +26,7 @@ function handleSubmit() {
     name: name.value.trim(),
     description: description.value.trim(),
     status: status.value,
-    createdAt: props.project?.createdAt ?? new Date().toISOString(),
+    createdAt: props.project?.createdAt ?? new Date().toISOString().split("T")[0],
     tasksCount: props.project?.tasksCount ?? 0,
   };
 

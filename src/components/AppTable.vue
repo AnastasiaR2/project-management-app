@@ -142,7 +142,11 @@ onBeforeUnmount(() => {
       </thead>
       <slot v-if="$slots.tableBody" name="tableBody" :data="filteredAndSortedData" />
       <tbody v-else>
+        <tr v-if="filteredAndSortedData.length === 0">
+          <td :colspan="columns.length" class="empty-row">No items to display.</td>
+        </tr>
         <tr
+          v-else
           v-for="item in filteredAndSortedData"
           :key="item.id"
           @click="emit('rowSelected', item.id as string)"
