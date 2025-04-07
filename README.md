@@ -9,6 +9,7 @@ A simple single-page application for managing projects and tasks. Built with **V
 - ✅ Project and Task management
 - ✅ Table with resizable columns
 - ✅ Drag-and-drop support for reordering items
+- ✅ Filter and sort functionality
 - ✅ Modal forms for adding, editing, and deleting
 - ✅ State management with Pinia
 - ✅ Type-safe components using TypeScript

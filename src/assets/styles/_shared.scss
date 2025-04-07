@@ -18,6 +18,10 @@
   textarea {
     resize: vertical;
   }
+
+  .required {
+    color: $danger-color;
+  }
 }
 
 .main-title-wrapper {

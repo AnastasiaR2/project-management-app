@@ -20,6 +20,8 @@ const assignee = ref(props.task?.assignee ?? "");
 const status = ref(props.task?.status ?? "To Do");
 const dueDate = ref(props.task?.dueDate ?? "");
 
+const today = new Date().toISOString().split("T")[0];
+
 const isEditing = computed(() => !!props.task?.id);
 
 const isValid = computed(() => title.value.trim().length > 0);
@@ -41,7 +43,7 @@ function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit" class="form">
     <div class="form-group">
-      <label for="name">Title *</label>
+      <label for="name">Title <span class="required">*</span></label>
       <input id="name" type="text" required v-model="title" />
     </div>
     <div class="form-group">
@@ -62,7 +64,7 @@ function handleSubmit() {
     </div>
     <div class="form-group">
       <label for="dueDate">Due Date</label>
-      <input id="dueDate" type="date" v-model="dueDate" />
+      <input id="dueDate" type="date" v-model="dueDate" :min="today" />
     </div>
 
     <AppButton type="submit" :disabled="!isValid"

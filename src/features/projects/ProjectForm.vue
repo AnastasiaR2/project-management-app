@@ -37,7 +37,7 @@ function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit" class="form">
     <div class="form-group">
-      <label for="name">Name *</label>
+      <label for="name">Name <span class="required">*</span></label>
       <input id="name" type="text" required v-model="name" />
     </div>
     <div class="form-group">
